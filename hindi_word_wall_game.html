@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>Hindi Match the Following – Grade 1</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #fffde7;
+    text-align: center;
+}
+
+h1 {
+    color: #e65100;
+    font-size: 32px;
+}
+
+.score {
+    font-size: 24px;
+    color: green;
+    margin: 10px;
+}
+
+.instructions {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.game-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.column {
+    width: 45%;
+}
+
+.item {
+    background: #ffe0b2;
+    margin: 12px;
+    padding: 14px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-size: 26px;
+}
+
+.item:hover {
+    transform: scale(1.05);
+    background: #ffcc80;
+}
+
+.picture img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.selected {
+    border: 4px solid #1976d2;
+}
+
+.correct {
+    background: #33ac37 !important;
+    pointer-events: none;
+}
+
+.wrong {
+    background: #e12727 !important;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧩 मिलान खेल (Match the Following)</h1>
+<div class="score">Score: <span id="score">0</span> / 10</div>
+<div class="instructions">पहले चित्र चुनो ➜ फिर सही शब्द चुनो</div>
+
+<div class="game-container">
+
+    <!-- PICTURES -->
+    <div class="column" id="pictures">
+
+        <div class="item picture" data-match="यज्ञ">
+            <img src="images/Picture1.png" alt="यज्ञ">
+        </div>
+
+        <div class="item picture" data-match="पत्र">
+            <img src="images/Picture2.png" alt="पत्र">
+        </div>
+
+        <div class="item picture" data-match="रथ">
+            <img src="images/Picture3.jpg" alt="रथ">
+        </div>
+
+        <div class="item picture" data-match="दस">
+            <img src="images/Picture4.png" alt="दस">
+        </div>
+
+        <div class="item picture" data-match="घर">
+            <img src="images/Picture5.png" alt="घर">
+        </div>
+
+        <div class="item picture" data-match="वन">
+            <img src="images/Picture6.png" alt="वन">
+        </div>
+
+        <div class="item picture" data-match="नल">
+            <img src="images/Picture7.png" alt="नल">
+        </div>
+
+        <div class="item picture" data-match="फल">
+            <img src="images/Picture8.png" alt="फल">
+        </div>
+
+        <div class="item picture" data-match="बस">
+            <img src="images/Picture9.png" alt="बस">
+        </div>
+
+        <div class="item picture" data-match="हल">
+            <img src="images/Picture10.png" alt="हल">
+        </div>
+
+    </div>
+
+    <!-- WORDS -->
+    <div class="column" id="words">
+        <div class="item" data-match="फल">फल</div>
+        <div class="item" data-match="यज्ञ">यज्ञ</div>
+        <div class="item" data-match="घर">घर</div>
+        <div class="item" data-match="दस">दस</div>
+        <div class="item" data-match="नल">नल</div>
+        <div class="item" data-match="पत्र">पत्र</div>
+        <div class="item" data-match="बस">बस</div>
+        <div class="item" data-match="वन">वन</div>
+        <div class="item" data-match="हल">हल</div>
+        <div class="item" data-match="रथ">रथ</div>
+    </div>
+
+</div>
+
+<script>
+let selectedPicture = null;
+let score = 0;
+
+document.querySelectorAll("#pictures .item").forEach(pic => {
+    pic.addEventListener("click", () => {
+        if (pic.classList.contains("correct")) return;
+        clearSelection();
+        selectedPicture = pic;
+        pic.classList.add("selected");
+    });
+});
+
+document.querySelectorAll("#words .item").forEach(word => {
+    word.addEventListener("click", () => {
+        if (!selectedPicture || word.classList.contains("correct")) return;
+
+        if (word.dataset.match === selectedPicture.dataset.match) {
+            word.classList.add("correct");
+            selectedPicture.classList.add("correct");
+            score++;
+            document.getElementById("score").innerText = score;
+        } else {
+            word.classList.add("wrong");
+            setTimeout(() => word.classList.remove("wrong"), 600);
+        }
+
+        selectedPicture.classList.remove("selected");
+        selectedPicture = null;
+    });
+});
+
+function clearSelection() {
+    document.querySelectorAll(".item").forEach(i => i.classList.remove("selected"));
+}
+</script>
+
+</body>
+</html>
