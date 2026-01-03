@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>Hindi Match the Following – Grade 1</title>
+
+<style>
+
+/* ===== RESET & PAGE LOCK ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #fffde7;
+    text-align: center;
+}
+
+/* ===== HEADER ===== */
+h1 {
+    color: #e65100;
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.score {
+    font-size: 26px;
+    color: green;
+    margin: 5px;
+}
+
+.instructions {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* ===== GAME LAYOUT ===== */
+.game-container {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100vh - 170px);
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+/* ===== COLUMNS ===== */
+.column {
+    width: 45%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Visual distinction */
+#pictures {
+    background: #fff8e1;
+    border-right: 4px dashed #ffb300;
+}
+
+#words {
+    background: #e3f2fd;
+}
+
+/* ===== ITEMS (UPDATED AS REQUESTED) ===== */
+.item {
+    background: #ffe0b2;
+    margin: 14px;
+    height: 90px;                 /* 🔥 increased box height */
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-size: 36px;
+
+    display: flex;               /* 🔥 center content */
+    align-items: center;         /* vertical center */
+    justify-content: center;     /* horizontal center */
+}
+
+/* Words take full width */
+#words .item {
+    width: 100%;
+}
+
+.item:hover {
+    transform: scale(1.05);
+    background: #ffcc80;
+}
+
+/* ===== IMAGES ===== */
+.picture img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+/* ===== GAME STATES ===== */
+.selected {
+    border: 4px solid #1976d2;
+}
+
+.correct {
+    background: #33ac37 !important;
+    pointer-events: none;
+}
+
+.wrong {
+    background: #e12727 !important;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🧩 मिलान खेल (Match the Following)</h1>
+<div class="score">Score: <span id="score">0</span> / 10</div>
+<div class="instructions">पहले चित्र चुनो ➜ फिर सही शब्द चुनो</div>
+
+<div class="game-container">
+
+    <!-- ===== LEFT: IMAGES ===== -->
+    <div class="column" id="pictures">
+
+        <div class="item picture" data-match="यज्ञ">
+            <img src="images/Picture1.png" alt="यज्ञ">
+        </div>
+
+        <div class="item picture" data-match="पत्र">
+            <img src="images/Picture2.png" alt="पत्र">
+        </div>
+
+        <div class="item picture" data-match="रथ">
+            <img src="images/Picture3.jpg" alt="रथ">
+        </div>
+
+        <div class="item picture" data-match="दस">
+            <img src="images/Picture4.png" alt="दस">
+        </div>
+
+        <div class="item picture" data-match="घर">
+            <img src="images/Picture5.png" alt="घर">
+        </div>
+
+        <div class="item picture" data-match="वन">
+            <img src="images/Picture6.png" alt="वन">
+        </div>
+
+        <div class="item picture" data-match="नल">
+            <img src="images/Picture7.png" alt="नल">
+        </div>
+
+        <div class="item picture" data-match="फल">
+            <img src="images/Picture8.png" alt="फल">
+        </div>
+
+        <div class="item picture" data-match="बस">
+            <img src="images/Picture9.png" alt="बस">
+        </div>
+
+        <div class="item picture" data-match="हल">
+            <img src="images/Picture10.png" alt="हल">
+        </div>
+
+    </div>
+
+    <!-- ===== RIGHT: WORDS ===== -->
+    <div class="column" id="words">
+        <div class="item" data-match="फल">फल</div>
+        <div class="item" data-match="यज्ञ">यज्ञ</div>
+        <div class="item" data-match="घर">घर</div>
+        <div class="item" data-match="दस">दस</div>
+        <div class="item" data-match="नल">नल</div>
+        <div class="item" data-match="पत्र">पत्र</div>
+        <div class="item" data-match="बस">बस</div>
+        <div class="item" data-match="वन">वन</div>
+        <div class="item" data-match="हल">हल</div>
+        <div class="item" data-match="रथ">रथ</div>
+    </div>
+
+</div>
+
+<script>
+let selectedPicture = null;
+let score = 0;
+
+/* Picture click */
+document.querySelectorAll("#pictures .item").forEach(pic => {
+    pic.addEventListener("click", () => {
+        if (pic.classList.contains("correct")) return;
+        clearSelection();
+        selectedPicture = pic;
+        pic.classList.add("selected");
+    });
+});
+
+/* Word click */
+document.querySelectorAll("#words .item").forEach(word => {
+    word.addEventListener("click", () => {
+        if (!selectedPicture || word.classList.contains("correct")) return;
+
+        if (word.dataset.match === selectedPicture.dataset.match) {
+            word.classList.add("correct");
+            selectedPicture.classList.add("correct");
+            score++;
+            document.getElementById("score").innerText = score;
+        } else {
+            word.classList.add("wrong");
+            setTimeout(() => word.classList.remove("wrong"), 600);
+        }
+
+        selectedPicture.classList.remove("selected");
+        selectedPicture = null;
+    });
+});
+
+function clearSelection() {
+    document.querySelectorAll(".item").forEach(i => i.classList.remove("selected"));
+}
+</script>
+
+</body>
+</html>
