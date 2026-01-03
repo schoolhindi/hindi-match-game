@@ -5,46 +5,81 @@
 <title>Hindi Match the Following – Grade 1</title>
 
 <style>
-body {
+
+/* ===== RESET & PAGE LOCK ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
     font-family: Arial, sans-serif;
     background: #fffde7;
     text-align: center;
 }
 
+/* ===== HEADER ===== */
 h1 {
     color: #e65100;
-    font-size: 32px;
+    font-size: 36px;
+    margin: 10px 0;
 }
 
 .score {
-    font-size: 24px;
+    font-size: 26px;
     color: green;
-    margin: 10px;
+    margin: 5px;
 }
 
 .instructions {
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
+/* ===== GAME LAYOUT ===== */
 .game-container {
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
+    justify-content: space-between;
+    height: calc(100vh - 170px);
+    padding: 10px 20px;
+    box-sizing: border-box;
 }
 
+/* ===== COLUMNS ===== */
 .column {
     width: 45%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
+/* Visual distinction */
+#pictures {
+    background: #fff8e1;
+    border-right: 4px dashed #ffb300;
+}
+
+#words {
+    background: #e3f2fd;
+}
+
+/* ===== ITEMS (UPDATED AS REQUESTED) ===== */
 .item {
     background: #ffe0b2;
-    margin: 12px;
-    padding: 14px;
+    margin: 14px;
+    height: 90px;                 /* 🔥 increased box height */
     border-radius: 15px;
     cursor: pointer;
     transition: transform 0.2s;
-    font-size: 26px;
+    font-size: 36px;
+
+    display: flex;               /* 🔥 center content */
+    align-items: center;         /* vertical center */
+    justify-content: center;     /* horizontal center */
+}
+
+/* Words take full width */
+#words .item {
+    width: 100%;
 }
 
 .item:hover {
@@ -52,12 +87,14 @@ h1 {
     background: #ffcc80;
 }
 
+/* ===== IMAGES ===== */
 .picture img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     object-fit: contain;
 }
 
+/* ===== GAME STATES ===== */
 .selected {
     border: 4px solid #1976d2;
 }
@@ -70,6 +107,7 @@ h1 {
 .wrong {
     background: #e12727 !important;
 }
+
 </style>
 </head>
 
@@ -81,7 +119,7 @@ h1 {
 
 <div class="game-container">
 
-    <!-- PICTURES -->
+    <!-- ===== LEFT: IMAGES ===== -->
     <div class="column" id="pictures">
 
         <div class="item picture" data-match="यज्ञ">
@@ -126,7 +164,7 @@ h1 {
 
     </div>
 
-    <!-- WORDS -->
+    <!-- ===== RIGHT: WORDS ===== -->
     <div class="column" id="words">
         <div class="item" data-match="फल">फल</div>
         <div class="item" data-match="यज्ञ">यज्ञ</div>
@@ -146,6 +184,7 @@ h1 {
 let selectedPicture = null;
 let score = 0;
 
+/* Picture click */
 document.querySelectorAll("#pictures .item").forEach(pic => {
     pic.addEventListener("click", () => {
         if (pic.classList.contains("correct")) return;
@@ -155,6 +194,7 @@ document.querySelectorAll("#pictures .item").forEach(pic => {
     });
 });
 
+/* Word click */
 document.querySelectorAll("#words .item").forEach(word => {
     word.addEventListener("click", () => {
         if (!selectedPicture || word.classList.contains("correct")) return;
